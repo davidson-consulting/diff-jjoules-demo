@@ -336,6 +336,12 @@ if __name__ == '__main__':
     mediane_delta_energy_per_test = {}
     mediane_delta_instr_per_test = {}
     mediane_delta_durations_per_test = {}
+    variation_perc_energy_per_test = {}
+    variation_perc_instr_per_test = {}
+    variation_perc_durations_per_test = {}
+    d_variation_perc_energy_per_test = {}
+    d_variation_perc_instr_per_test = {}
+    d_variation_perc_durations_per_test = {}
     for test in data_per_test_v1:
         mediane_per_test_per_measures_v1[test] = {}
         stddev_per_test_per_measures_v1[test] = {}
@@ -368,6 +374,14 @@ if __name__ == '__main__':
             [d['package|uJ'] for d in data_per_test_v1[test]],
             [d['package|uJ'] for d in data_per_test_v2[test]]
         )
+        variation_perc_energy_per_test[test] = compute_and_format_perc(
+            mediane([d['package|uJ'] for d in data_per_test_v1[test]]),
+            delta_mediane_energy_per_test[test], 
+        )
+        d_variation_perc_energy_per_test[test] = compute_and_format_perc(
+            mediane([d['package|uJ'] for d in data_per_test_v1[test]]),
+            mediane_delta_energy_per_test[test], 
+        )
         delta_mediane_instr_per_test[test] = mediane_delta(
             [d['instructions'] for d in data_per_test_v1[test]],
             [d['instructions'] for d in data_per_test_v2[test]]
@@ -376,13 +390,29 @@ if __name__ == '__main__':
             [d['instructions'] for d in data_per_test_v1[test]],
             [d['instructions'] for d in data_per_test_v2[test]]
         )
+        variation_perc_instr_per_test[test] = compute_and_format_perc(
+            mediane([d['instructions'] for d in data_per_test_v1[test]]),
+            delta_mediane_instr_per_test[test], 
+        )
+        d_variation_perc_instr_per_test[test] = compute_and_format_perc(
+            mediane([d['instructions'] for d in data_per_test_v1[test]]),
+            mediane_delta_instr_per_test[test], 
+        )
         delta_mediane_durations_per_test[test] = mediane_delta(
             [d['duration|ns'] for d in data_per_test_v1[test]],
             [d['duration|ns'] for d in data_per_test_v2[test]]
         )
         mediane_delta_durations_per_test[test] = mediane_of_delta(
-            [d['instructions'] for d in data_per_test_v1[test]],
-            [d['instructions'] for d in data_per_test_v2[test]]
+            [d['duration|ns'] for d in data_per_test_v1[test]],
+            [d['duration|ns'] for d in data_per_test_v2[test]]
+        )
+        variation_perc_durations_per_test[test] = compute_and_format_perc(
+            mediane([d['duration|ns'] for d in data_per_test_v1[test]]),
+            delta_mediane_durations_per_test[test], 
+        )
+        d_variation_perc_durations_per_test[test] = compute_and_format_perc(
+            mediane([d['duration|ns'] for d in data_per_test_v1[test]]),
+            mediane_delta_durations_per_test[test], 
         )
 
     write_json(output_demo_directory_v1 + 'mediane.json', mediane_per_test_per_measures_v1)
@@ -402,6 +432,14 @@ if __name__ == '__main__':
     mediane_d_instructions_p, mediane_d_instructions_n = split_data_array(dict_to_array(mediane_delta_instr_per_test))
     mediane_d_durations_p, mediane_d_durations_n = split_data_array(dict_to_array(mediane_delta_durations_per_test))
 
+    variations_energy = dict_to_array(variation_perc_energy_per_test)
+    variations_instr = dict_to_array(variation_perc_instr_per_test)
+    variations_durations = dict_to_array(variation_perc_durations_per_test)
+    
+    d_variations_energy = dict_to_array(d_variation_perc_energy_per_test)
+    d_variations_instr = dict_to_array(d_variation_perc_instr_per_test)
+    d_variations_durations = dict_to_array(d_variation_perc_durations_per_test)
+
     print(mediane_energy_p, mediane_energy_n)
     print(mediane_instructions_p, mediane_instructions_n)
     print(mediane_durations_p, mediane_durations_n)
@@ -418,15 +456,17 @@ if __name__ == '__main__':
             'Test': test_key + test_key + test_key,
             'Value_n': mediane_energy_n + mediane_instructions_n + mediane_durations_n,
             'Value_p': mediane_energy_p + mediane_instructions_p + mediane_durations_p,
+            'Variation': variations_energy + variations_instr + variations_durations,
             'Value_d_n': mediane_d_energy_n + mediane_d_instructions_n + mediane_d_durations_n,
             'Value_d_p': mediane_d_energy_p + mediane_d_instructions_p + mediane_d_durations_p,
+            'Variation_d': d_variations_energy + d_variations_instr + d_variations_durations,
             'Measure': ['Energy' for i in range(len(test_key))] +
             ['Instructions' for i in range(len(test_key))] +
             ['Durations' for i in range(len(test_key))]
         }, 
     )
     print(df)
-    
+
     plot_delta_as_hist2(
         mediane_energy_p + mediane_instructions_p + mediane_durations_p,
         mediane_energy_n + mediane_instructions_n + mediane_durations_n,
