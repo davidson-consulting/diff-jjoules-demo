@@ -126,6 +126,11 @@ def read_json(path_to_json):
         data = json.load(json_file)
     return data
 
+def mediane_of_delta(data_v1, data_v2):
+    deltas = []
+    for i in range(len(data_v1)):
+        deltas.append(data_v2[i] - data_v1[i])
+    return mediane(deltas)
 
 def mediane_delta(data_v1, data_v2):
     return mediane(data_v2) - mediane(data_v1)
@@ -162,11 +167,11 @@ def delete_and_mkdir(directory):
     mkdir(directory)
 
 def plot_delta_as_hist2(data_p, data_n, labels, units):
-    print(len(data_p), len(data_n), len(labels), len(units))
-    print(data_p)
-    print(data_n)
-    print(labels)
-    print(units)
+    # print(len(data_p), len(data_n), len(labels), len(units))
+    # print(data_p)
+    # print(data_n)
+    # print(labels)
+    # print(units)
     df = pd.DataFrame(
         {
             'Test': labels,
@@ -175,9 +180,9 @@ def plot_delta_as_hist2(data_p, data_n, labels, units):
             'Measure': units
         }, 
     )
-    print(df)
-    bar_plot = sns.barplot(x="Test", y='Value_p', hue='Measure', data=df, color='blue')
-    bar_plot = sns.barplot(x="Test", y='Value_n', hue='Measure', data=df, color='blue')
+    #print(df)
+    bar_plot = sns.barplot(x="Test", y='Value_p', hue='Measure', data=df)
+    bar_plot = sns.barplot(x="Test", y='Value_n', hue='Measure', data=df)
 
     bar_plot.set_ylabel("Value")
     h, l = bar_plot.get_legend_handles_labels()
@@ -185,7 +190,6 @@ def plot_delta_as_hist2(data_p, data_n, labels, units):
     plt.savefig('target/demo-output/graph.png')
     plt.show()
     plt.clf()
-
 
 def split_data_array(data):
     data_p, data_n = [], []
@@ -329,6 +333,9 @@ if __name__ == '__main__':
     delta_mediane_energy_per_test = {}
     delta_mediane_instr_per_test = {}
     delta_mediane_durations_per_test = {}
+    mediane_delta_energy_per_test = {}
+    mediane_delta_instr_per_test = {}
+    mediane_delta_durations_per_test = {}
     for test in data_per_test_v1:
         mediane_per_test_per_measures_v1[test] = {}
         stddev_per_test_per_measures_v1[test] = {}
@@ -357,13 +364,25 @@ if __name__ == '__main__':
             [d['package|uJ'] for d in data_per_test_v1[test]],
             [d['package|uJ'] for d in data_per_test_v2[test]]
         )
+        mediane_delta_energy_per_test[test] = mediane_of_delta(
+            [d['package|uJ'] for d in data_per_test_v1[test]],
+            [d['package|uJ'] for d in data_per_test_v2[test]]
+        )
         delta_mediane_instr_per_test[test] = mediane_delta(
+            [d['instructions'] for d in data_per_test_v1[test]],
+            [d['instructions'] for d in data_per_test_v2[test]]
+        )
+        mediane_delta_instr_per_test[test] = mediane_of_delta(
             [d['instructions'] for d in data_per_test_v1[test]],
             [d['instructions'] for d in data_per_test_v2[test]]
         )
         delta_mediane_durations_per_test[test] = mediane_delta(
             [d['duration|ns'] for d in data_per_test_v1[test]],
             [d['duration|ns'] for d in data_per_test_v2[test]]
+        )
+        mediane_delta_durations_per_test[test] = mediane_of_delta(
+            [d['instructions'] for d in data_per_test_v1[test]],
+            [d['instructions'] for d in data_per_test_v2[test]]
         )
 
     write_json(output_demo_directory_v1 + 'mediane.json', mediane_per_test_per_measures_v1)
@@ -379,11 +398,35 @@ if __name__ == '__main__':
     mediane_instructions_p, mediane_instructions_n = split_data_array(dict_to_array(delta_mediane_instr_per_test))
     mediane_durations_p, mediane_durations_n = split_data_array(dict_to_array(delta_mediane_durations_per_test))
 
+    mediane_d_energy_p, mediane_d_energy_n = split_data_array(dict_to_array(mediane_delta_energy_per_test))
+    mediane_d_instructions_p, mediane_d_instructions_n = split_data_array(dict_to_array(mediane_delta_instr_per_test))
+    mediane_d_durations_p, mediane_d_durations_n = split_data_array(dict_to_array(mediane_delta_durations_per_test))
+
     print(mediane_energy_p, mediane_energy_n)
     print(mediane_instructions_p, mediane_instructions_n)
     print(mediane_durations_p, mediane_durations_n)
-    
+
+    print(mediane_d_energy_p, mediane_d_energy_n)
+    print(mediane_d_instructions_p, mediane_d_instructions_n)
+    print(mediane_d_durations_p, mediane_d_durations_n)
+
+
     test_key = [test.split('-')[-1].split('.')[0] for test in delta_mediane_energy_per_test]
+
+    df = pd.DataFrame(
+        {
+            'Test': test_key + test_key + test_key,
+            'Value_n': mediane_energy_n + mediane_instructions_n + mediane_durations_n,
+            'Value_p': mediane_energy_p + mediane_instructions_p + mediane_durations_p,
+            'Value_d_n': mediane_d_energy_n + mediane_d_instructions_n + mediane_d_durations_n,
+            'Value_d_p': mediane_d_energy_p + mediane_d_instructions_p + mediane_d_durations_p,
+            'Measure': ['Energy' for i in range(len(test_key))] +
+            ['Instructions' for i in range(len(test_key))] +
+            ['Durations' for i in range(len(test_key))]
+        }, 
+    )
+    print(df)
+    
     plot_delta_as_hist2(
         mediane_energy_p + mediane_instructions_p + mediane_durations_p,
         mediane_energy_n + mediane_instructions_n + mediane_durations_n,
