@@ -240,8 +240,8 @@ def to_readable_test_name(test):
 PATH_V1 = '/tmp/v1'
 PATH_V2 = '/tmp/v2'
 
-SHA_V1 = '4b8e6f61785365106ccef935cb871b31026bcab8'
-SHA_V2 = 'fab0472332025d2c8cc6dc1dd2a11d10d3015352'
+SHA_V1 = '0e1bd12252a970dd41f7e96104db1e24db6ea30d'
+SHA_V2 = '8f9690efd14d74065d376a961329ac1a014c887b'
 
 target_jjoules_reports_folder = 'target/jjoules-reports/'
 
