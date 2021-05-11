@@ -73,7 +73,7 @@ sudo -i
 echo -1 > /proc/sys/kernel/perf_event_paranoid
 ```
 
-### Configure Compilation for Warming up the JVM with Maven
+### Configure Compilation for Warming up the JVM with Maven (Optionnal, slow down the demo)
 
 ```sh
 export MAVEN_OPTS="-XX:CompileThreshold=1 -XX:-TieredCompilation"
@@ -98,7 +98,7 @@ public List<T> map(Function<T, T> operator) {
 }
 ```
 
-### Instrumenation Example
+### Instrumentation Example
 
 ```diff
 +@EnergyTest
