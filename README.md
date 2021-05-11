@@ -121,7 +121,33 @@ python3 src/main/python/demo.py
 You should observe something like : 
 
 ```txt
-fr.davidson.diff_jjoules_demo.InternalListTest-testMapEmptyList.json -63836.0
-fr.davidson.diff_jjoules_demo.InternalListTest-testMapOneElement.json -18369.0
-fr.davidson.diff_jjoules_demo.InternalListTest-testMapMultipleElement.json 16857.5
+                    Test  Value_n  Value_p Variation  Measure
+0        testMapEmptyList        0     3418    31.29% Energy
+1       testMapOneElement      -61        0    -0.57% Energy
+2  testMapMultipleElement        0     2441    19.23% Energy
+3        testMapEmptyList        0     6298     1.46% Instructions
+4       testMapOneElement        0      568     0.14% Instructions
+5  testMapMultipleElement    -9840        0    -1.49% Instructions
+6        testMapEmptyList        0   443216    25.66% Durations
+7       testMapOneElement   -69384        0    -4.78% Durations
+8  testMapMultipleElement   -80080        0    -4.26% Durations
 ```
+
+For each Measure : Energy (uJ), Instructions (#) and Durations (ns), this table gives for each unit test
+(testMapEmptyList, testMapOneElement, testMapMultipleElement), the delta (v2 - v1). 
+Value_n and Value_p are equals to delta or 0 depending on the sign of the delta (`< 0` for Value_n, and `> 0` for Value_p).
+The variation is the proportion of the delta against the value of the v1 : (delta * v1) / 100.
+This is done to reveal how much the commit impacts the indicators of the program.
+
+In the folder `target/demo-output/` you can find all the data stored : for each version `v1` and `v2`, there is a folder.
+Inside each folder `target/demo-output/v1` and `target/demo-output/v2`, there is one folder per iteration.
+Inside each iteration folder, _e.g._ `target/demo-output/v1/1`, there are several json files that reports the value monitored by
+`JJoules`.
+Inside the folder `target/demo-output/`, there are also two histogram, such as the following :
+
+![](src/main/resource/graph_all.png)
+![](src/main/resource/graph_instr_energy.png)
+
+That reports graphically the computed deltas. 
+If the delta is negative, it means that v1 consumes more than v2 (because `v2 - v1 < 0, v2 < v1`).
+If the delta is positive, it means that v1 consumes less than v2 (because `v2 - v1 > 0, v2 > v1`).

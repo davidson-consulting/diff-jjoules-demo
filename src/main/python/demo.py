@@ -166,12 +166,7 @@ def delete_and_mkdir(directory):
     delete_directory(directory)
     mkdir(directory)
 
-def plot_delta_as_hist2(data_p, data_n, labels, units):
-    # print(len(data_p), len(data_n), len(labels), len(units))
-    # print(data_p)
-    # print(data_n)
-    # print(labels)
-    # print(units)
+def plot_delta_as_hist2(data_p, data_n, labels, units, output):
     df = pd.DataFrame(
         {
             'Test': labels,
@@ -180,15 +175,16 @@ def plot_delta_as_hist2(data_p, data_n, labels, units):
             'Measure': units
         }, 
     )
-    #print(df)
     bar_plot = sns.barplot(x="Test", y='Value_p', hue='Measure', data=df)
     bar_plot = sns.barplot(x="Test", y='Value_n', hue='Measure', data=df)
 
     bar_plot.set_ylabel("Value")
     h, l = bar_plot.get_legend_handles_labels()
-    bar_plot.legend(h, [units[0], units[3], units[6]], title="Measurements")
-    plt.savefig('target/demo-output/graph.png')
-    plt.show()
+    if (len(units) > 6):
+        bar_plot.legend(h, [units[0], units[3], units[6]], title="Measurements")
+    else:
+        bar_plot.legend(h, [units[0], units[3]], title="Measurements")
+    plt.savefig('target/demo-output/graph_' + output)
     plt.clf()
 
 def split_data_array(data):
@@ -465,7 +461,7 @@ if __name__ == '__main__':
             ['Durations' for i in range(len(test_key))]
         }, 
     )
-    print(df)
+    print(str(df))
 
     plot_delta_as_hist2(
         mediane_energy_p + mediane_instructions_p + mediane_durations_p,
@@ -473,5 +469,15 @@ if __name__ == '__main__':
         test_key + test_key + test_key,
         ['Energy' for i in range(len(test_key))] +
         ['Instructions' for i in range(len(test_key))] +
-        ['Durations' for i in range(len(test_key))]
+        ['Durations' for i in range(len(test_key))],
+        'all.png'
+        
+    )
+    plot_delta_as_hist2(
+        mediane_energy_p + mediane_instructions_p,
+        mediane_energy_n + mediane_instructions_n,
+        test_key + test_key,
+        ['Energy' for i in range(len(test_key))] +
+        ['Instructions' for i in range(len(test_key))],
+        'instr_energy.png'
     )
