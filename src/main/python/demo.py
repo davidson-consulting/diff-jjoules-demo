@@ -58,6 +58,19 @@ def mvn_install_skip_test_build_classpath(path):
         '-Dmdep.outputFile=classpath'
     ]))
 
+def mvn_install_skip_test_build_classpath_mutate_energy(path):
+    return run_cmd(' '.join([
+        MVN_CMD_WITH_SKIPS_F,
+        path + POM_FILE,
+        CLEAN_GOAL,
+        INSTALL_GOAL,
+        SKIP_TESTS,
+        'dependency:build-classpath',
+        '-Dmdep.outputFile=classpath',
+        'fr.davidson:untare-jjoules:mutate',
+        '-Dmethod-names-per-full-qualified-names=methodNames.csv'
+    ]))
+
 CMD_DIFF_TEST_SELECTION = 'eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list'
 OPT_PATH_DIR_SECOND_VERSION = '-Dpath-dir-second-version='
 
@@ -262,14 +275,15 @@ if __name__ == '__main__':
     # Set up V1
     delete_directory(PATH_V1)
     git_clone_folder(PATH_V1)
-    git_reset_hard_folder(PATH_V1, SHA_V1)
+    #git_reset_hard_folder(PATH_V1, SHA_V1)
     mvn_install_skip_test_build_classpath(PATH_V1)
 
     # Set up V2
     delete_directory(PATH_V2)
     git_clone_folder(PATH_V2)
-    git_reset_hard_folder(PATH_V2, SHA_V2)
-    mvn_install_skip_test_build_classpath(PATH_V2)
+    mvn_install_skip_test_build_classpath_mutate_energy(PATH_V2)
+    #git_reset_hard_folder(PATH_V2, SHA_V2)
+    #mvn_install_skip_test_build_classpath(PATH_V2)
 
     # Select tests that execute the changes
     mvn_diff_test_selection(PATH_V1, PATH_V2)
