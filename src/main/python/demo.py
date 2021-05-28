@@ -264,8 +264,6 @@ tests = [
     'fr.davidson.diff_jjoules_demo.InternalListTest-testMapMultipleElement.json'
 ]
 
-warmup_test_name = 'aaaaa_warmup'
-
 output_demo_directory = 'target/demo-output/'
 output_demo_directory_v1 = output_demo_directory + 'v1/'
 output_demo_directory_v2 = output_demo_directory + 'v2/'
@@ -275,31 +273,17 @@ if __name__ == '__main__':
     # Set up V1
     delete_directory(PATH_V1)
     git_clone_folder(PATH_V1)
-    #git_reset_hard_folder(PATH_V1, SHA_V1)
     mvn_install_skip_test_build_classpath(PATH_V1)
 
     # Set up V2
     delete_directory(PATH_V2)
     git_clone_folder(PATH_V2)
     mvn_install_skip_test_build_classpath_mutate_energy(PATH_V2)
-    #git_reset_hard_folder(PATH_V2, SHA_V2)
-    #mvn_install_skip_test_build_classpath(PATH_V2)
 
     # Select tests that execute the changes
     mvn_diff_test_selection(PATH_V1, PATH_V2)
-    tests_to_execute_tmp = get_tests_to_execute(PATH_V1 + '/testsThatExecuteTheChange.csv')
-    print(tests_to_execute_tmp)
-    tests_to_execute = {}
-    for test in tests_to_execute_tmp:
-        tests_to_execute[test] = []
-        print(test)
-        for cases in tests_to_execute_tmp[test]:
-            print(cases)
-            for i in range(5):
-                tests_to_execute[test].append('aaa_' + str(i) + '_' + cases)
-            tests_to_execute[test].append(cases)
-        print(tests_to_execute)
-    
+    tests_to_execute = get_tests_to_execute(PATH_V1 + '/testsThatExecuteTheChange.csv')
+
     # Cleaning state after test selection
     mvn_clean_test_skip_test(PATH_V2)
 
