@@ -83,19 +83,25 @@ export MAVEN_OPTS="-XX:CompileThreshold=1 -XX:-TieredCompilation"
 
 ### Scenario
 
-In this demo, the code changes are the following:
+In this demo, the code changes is an artificial mutation:
 
 ```diff
 public List<T> map(Function<T, T> operator) {
++   fr.davidson.diff_jjoules_demo.InternalList.consumeEnergy(10000L);
     final List<T> mappedList = new ArrayList<>();
-+    for (T t : this.internalList) {
-+        mappedList.add(operator.apply(t));
-+    }
--    for (int i = 0; i < this.internalList.size(); i++) {
--        mappedList.add(operator.apply(this.internalList.get(i)));
--    }
+    for (T t : this.internalList) {
+        mappedList.add(operator.apply(t));
+    }
     return mappedList;
 }
++private static void consumeEnergy(final long energyToConsume) {
++   final org.powerapi.jjoules.EnergySample energySample = org.powerapi.jjoules.rapl.RaplDevice.RAPL.recordEnergy();
++   long random = 0L;
++   while (energySample.getEnergyReport().get("package|uJ") < energyToConsume) {
++       random += new java.util.Random(random).nextLong();
++   } 
++   energySample.stop();
++}
 ```
 
 ### Instrumentation Example
@@ -121,16 +127,16 @@ python3 src/main/python/demo.py
 You should observe something like : 
 
 ```txt
-                    Test  Value_n  Value_p Variation  Measure
-0        testMapEmptyList        0     3418    31.29% Energy
-1       testMapOneElement      -61        0    -0.57% Energy
-2  testMapMultipleElement        0     2441    19.23% Energy
-3        testMapEmptyList        0     6298     1.46% Instructions
-4       testMapOneElement        0      568     0.14% Instructions
-5  testMapMultipleElement    -9840        0    -1.49% Instructions
-6        testMapEmptyList        0   443216    25.66% Durations
-7       testMapOneElement   -69384        0    -4.78% Durations
-8  testMapMultipleElement   -80080        0    -4.26% Durations
+                     Test  Value_n   Value_p Variation  Value_d_n  Value_d_p Variation_d       Measure
+0        testMapEmptyList        0     67140   391.49%          0      66162     385.78%        Energy
+1       testMapOneElement        0    220825   698.46%          0     211303     668.34%        Energy
+2  testMapMultipleElement        0     32776   152.56%          0      35950     167.33%        Energy
+3        testMapEmptyList        0   4677812   427.05%          0    4655486     425.01%  Instructions
+4       testMapOneElement        0   2998825   103.21%          0    3037944     104.56%  Instructions
+5  testMapMultipleElement        0   4671389   562.80%          0    4595422     553.65%  Instructions
+6        testMapEmptyList        0   6002029   151.59%          0    5423796     136.98%     Durations
+7       testMapOneElement        0  24148910   548.52%          0   23404691     531.62%     Durations
+8  testMapMultipleElement        0   4776862   167.80%          0    4528222     159.07%     Durations
 ```
 
 For each Measure : Energy (uJ), Instructions (#) and Durations (ns), this table gives for each unit test
