@@ -73,7 +73,7 @@ sudo -i
 echo -1 > /proc/sys/kernel/perf_event_paranoid
 ```
 
-### Configure Compilation for Warming up the JVM with Maven
+### Configure Compilation for Warming up the JVM with Maven (Optionnal, slow down the demo)
 
 ```sh
 export MAVEN_OPTS="-XX:CompileThreshold=1 -XX:-TieredCompilation"
@@ -98,7 +98,7 @@ public List<T> map(Function<T, T> operator) {
 }
 ```
 
-### Instrumenation Example
+### Instrumentation Example
 
 ```diff
 +@EnergyTest
@@ -145,8 +145,8 @@ Inside each iteration folder, _e.g._ `target/demo-output/v1/1`, there are severa
 `JJoules`.
 Inside the folder `target/demo-output/`, there are also two histogram, such as the following :
 
-![](src/main/resource/graph_all.png)
-![](src/main/resource/graph_instr_energy.png)
+![graph_all](./src/main/resources/graph_all.png)
+![graph_instr_energy](./src/main/resources/graph_instr_energy.png)
 
 That reports graphically the computed deltas. 
 If the delta is negative, it means that v1 consumes more than v2 (because `v2 - v1 < 0, v2 < v1`).
