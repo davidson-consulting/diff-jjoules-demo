@@ -10,8 +10,9 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
-      - name: Build with Maven
+      - uses: actions/checkout@v1
+      - name: Build V1 with Maven
         run: mvn install -DskipTests
-      - name: Run Diff-Jjoules mutations
-        run: mvn dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv
+      - uses: actions/checkout@v1
+      - name: Build and Mutate V2 with Maven
+        run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv
