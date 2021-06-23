@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ master ]
     
-jobs:
-  build:
+jobs: 
+  diff-jjoules-demo:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
@@ -25,12 +25,16 @@ jobs:
         run: mvn clean test -DskipTests fr.davidson:diff-jjoules:instrument -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=../diff-jjoules-demo-v2
       - name: Run tests v1
         run: mvn clean test
+        env:
+          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
       - name: Run tests v2
         run: mvn -f ../diff-jjoules-demo-v2/pom.xml clean test
+        env:
+          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
         
   cleanup:
     runs-on: self-hosted
-    needs: build
+    needs: diff-jjoules-demo
     if: always()
     steps:
       - name: Cleanup
