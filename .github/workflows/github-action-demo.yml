@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build V1 with Maven
-        run: mvn install -DskipTests
-      - name: Copy V1
-        run: ls -la
+        run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+      - name: Copy V1 to V2
+        run: cd .. && cp -r diff-jjoules-demo diff-jjoules-demo-v2
       - name: Build and Mutate V2 with Maven
-        run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv
+        run: mvn -f ../diff-jjoules-demo-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv
