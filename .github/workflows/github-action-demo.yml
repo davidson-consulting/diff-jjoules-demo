@@ -17,3 +17,14 @@ jobs:
         run: cd .. && cp -r diff-jjoules-demo diff-jjoules-demo-v2
       - name: Build and Mutate V2 with Maven
         run: mvn -f ../diff-jjoules-demo-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv
+      - name: Diff test selection
+        run: mvn clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=../diff-jjoules-demo-v2
+      - name: Cleaning state of V2 after selection
+        run: mvn -f ../diff-jjoules-demo-v2/pom.xml clean test -DskipTests
+      - name: JJoules instrumentation
+        run: mvn clean test -DskipTests fr.davidson:diff-jjoules:instrument -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=../diff-jjoules-demo-v2
+      - name: Run tests v1
+        run: mvn clean test
+      - name: Run tests v2
+        run: mvn -f ../diff-jjoules-demo-v2/pom.xml clean test
+
