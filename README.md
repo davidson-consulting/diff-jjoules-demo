@@ -65,6 +65,14 @@ cd dspot
 mvn clean install -DskipTests
 ```
 
+### Install Untare-JJoules
+
+```sh
+git clone https://github.com/davidson-consulting/untare-jjoules.git
+cd untare-jjoules
+mvn clean install -DskipTests
+```
+
 ### Set up permission to RAPL and perf_event
 
 ```sh
