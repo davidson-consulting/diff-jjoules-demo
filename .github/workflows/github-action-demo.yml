@@ -27,4 +27,12 @@ jobs:
         run: mvn clean test
       - name: Run tests v2
         run: mvn -f ../diff-jjoules-demo-v2/pom.xml clean test
+        
+  cleanup:
+    runs-on: self-hosted
+    needs: build
+    if: always()
+    steps:
+      - name: Cleanup
+        run: rm -rf ../diff-jjoules-demo-v2
 
