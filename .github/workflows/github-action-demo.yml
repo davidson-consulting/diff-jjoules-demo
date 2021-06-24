@@ -40,7 +40,7 @@ jobs:
       - name: Build and Mutate V2 with Maven
         run: mvn -f /home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Run Mark
-        run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2 -Dpath-data-json=target/diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
+        run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
         
   cleanup:
     runs-on: self-hosted
