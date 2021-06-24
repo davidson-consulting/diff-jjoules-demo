@@ -33,6 +33,8 @@ jobs:
         run: mvn clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:diff-jjoules:delta -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
+      - name: Run Mark
+        run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2 -Dpath-data-json=target/diff-jjoules/delta.json -Dtests-list=/testsThatExecuteTheChange.csv
         
   cleanup:
     runs-on: self-hosted
