@@ -34,11 +34,11 @@ jobs:
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
         
-#  cleanup:
-#    runs-on: self-hosted
-#    needs: diff-jjoules-demo
-#    if: always()
-#    steps:
-#      - name: Cleanup
-#        run: rm -rf ../diff-jjoules-demo-v2
+  cleanup:
+    runs-on: self-hosted
+    needs: diff-jjoules-demo
+    if: always()
+    steps:
+      - name: Cleanup
+      run: rm -rf ../diff-jjoules-demo-v2
 
