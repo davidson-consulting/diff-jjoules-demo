@@ -40,5 +40,5 @@ jobs:
     if: always()
     steps:
       - name: Cleanup
-      run: rm -rf ../diff-jjoules-demo-v2
+        run: rm -rf ../diff-jjoules-demo-v2
 
