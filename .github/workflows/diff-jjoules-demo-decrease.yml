@@ -48,7 +48,7 @@ jobs:
         
   cleanup:
     runs-on: self-hosted
-    needs: comment-pr
+    needs: diff-jjoules-demo
     if: always()
     steps:
       - name: Cleanup
