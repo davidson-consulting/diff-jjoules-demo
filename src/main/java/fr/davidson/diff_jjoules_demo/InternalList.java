@@ -3,6 +3,7 @@ package fr.davidson.diff_jjoules_demo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 /**
@@ -28,6 +29,20 @@ public class InternalList<T> {
 
     public int count() {
         return this.internalList.size();
+    }
+
+    public int count2() {
+        consumeEnergy(2000);
+        return this.internalList.size();
+    }
+
+    private static long consumeEnergy(final long timeElapsed) {
+        long current = new Random().nextLong();
+        final long startingTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startingTime < timeElapsed) {
+            current += new Random(current).nextLong();
+        }
+        return current;
     }
 
 }
