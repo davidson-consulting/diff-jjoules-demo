@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
-       with:
+        with:
           path: diff-jjoules-decrease
       - name: Build V1 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
