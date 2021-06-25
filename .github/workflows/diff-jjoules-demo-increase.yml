@@ -3,9 +3,7 @@ name: Diff-JJoules Demo Increase
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-    
+
 jobs: 
   diff-jjoules-demo:
     runs-on: self-hosted

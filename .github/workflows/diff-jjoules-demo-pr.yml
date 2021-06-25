@@ -1,0 +1,52 @@
+name: Diff-JJoules Demo Pull Request
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs: 
+  diff-jjoules-demo:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: v2
+      - name: Build V2 with Maven
+        run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+      - uses: actions/checkout@v1
+          with:
+            path: v1
+      - name: Build V1 with Maven
+          run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+      - name: Diff test selection
+        run: mvn clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/V2
+        env:
+          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
+      - name: Cleaning state of V2 after selection
+        run: mvn -f ../v2/pom.xml clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+      - name: JJoules instrumentation
+        run: mvn clean test -DskipTests fr.davidson:diff-jjoules:instrument -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2
+      - name: Compile V1
+        run: mvn clean test -DskipTests
+      - name: Compile V2
+        run: mvn clean test -DskipTests -f ../v2/pom.xml
+      - name: Run tests and collect data
+        run: mvn clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:diff-jjoules:delta -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2
+        env:
+          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
+      - name: Checkout v1
+        run: git checkout -- .
+      - name: Checkout v2
+        run: cd ../v2 && git checkout -- .
+      - name: Run Mark
+        run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
+      - name: Run Markdown
+        run: mvn fr.davidson:diff-jjoules:markdown -Dpath-delta-json=diff-jjoules/delta.json
+        
+  cleanup:
+    runs-on: self-hosted
+    needs: diff-jjoules-demo
+    if: always()
+    steps:
+      - name: Cleanup
+        run: rm -rf ../v2
