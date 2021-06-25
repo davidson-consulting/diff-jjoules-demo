@@ -25,7 +25,7 @@ public class InternalListTest {
         final InternalList<Integer> emptyList = new InternalList<>(1);
         final List<Integer> map = emptyList.map(integer -> 2 * integer);
         assertFalse(map.isEmpty());
-        assertEquals(2, map.get(0));
+        assertEquals(2, (int)map.get(0));
     }
 
     @Test
