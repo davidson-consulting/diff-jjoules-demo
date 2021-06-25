@@ -14,6 +14,11 @@ jobs:
           clean: false
       - name: Build V2 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+      - uses: actions/checkout@v1
+        with:
+          path: v1
+          ref: ${{ github.event.pull_request.head.sha }}
+          clean: false
       - name: Build V1 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Diff test selection
