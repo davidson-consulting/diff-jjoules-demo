@@ -8,7 +8,7 @@ jobs:
   diff-jjoules-demo:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
         with:
           path: diff-jjoules-increase
       - name: Build V1 with Maven

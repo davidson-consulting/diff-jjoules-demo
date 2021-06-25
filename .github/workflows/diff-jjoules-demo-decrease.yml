@@ -6,7 +6,6 @@ on:
     
 jobs: 
   diff-jjoules-demo:
-    needs: prepare-repositories
     steps:
       - uses: actions/checkout@v1
         with:
