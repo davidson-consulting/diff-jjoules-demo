@@ -49,4 +49,4 @@ jobs:
     if: always()
     steps:
       - name: Cleanup
-        run: rm -rf ../v2
+        run: rm -rf ../v1
