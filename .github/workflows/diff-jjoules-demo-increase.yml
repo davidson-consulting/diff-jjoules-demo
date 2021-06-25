@@ -43,10 +43,23 @@ jobs:
         run: mvn -f /home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-increase-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Run Mark
         run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-increase-v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
+      - name: Run Markdown
+        run: mvn fr.davidson:diff-jjoules:markdown -Dpath-delta-json=diff-jjoules/delta.json
+  
+  comment-pr:
+    runs-on: self-hosted
+    needs: diff-jjoules-demo
+    if: always()
+    steps:
+      - uses: harupy/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: template.md
         
   cleanup:
     runs-on: self-hosted
-    needs: diff-jjoules-demo
+    needs: comment-pr
     if: always()
     steps:
       - name: Cleanup
