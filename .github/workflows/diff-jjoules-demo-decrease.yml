@@ -28,7 +28,7 @@ jobs:
       - name: Compile V1
         run: mvn clean test -DskipTests
       - name: Compile V2
-        run: mvn clean test -DskipTests -f ../diff-jjoules-decrease-v2/pom.xml -Dmdep.outputFile=classpath
+        run: mvn clean test -DskipTests -f ../diff-jjoules-decrease-v2/pom.xml dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Run tests and collect data
         run: mvn clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:diff-jjoules:delta -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2
         env:
