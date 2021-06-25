@@ -43,6 +43,8 @@ jobs:
         run: mvn -f /home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Run Mark
         run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
+      - name: Run Markdown
+        run: mvn fr.davidson:diff-jjoules:markdown -Dpath-delta-json=diff-jjoules/delta.json
         
   cleanup:
     runs-on: self-hosted
