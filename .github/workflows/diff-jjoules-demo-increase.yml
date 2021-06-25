@@ -1,4 +1,4 @@
-name: Diff-JJoules Demo
+name: Diff-JJoules Demo Increase
 
 on:
   pull_request:
