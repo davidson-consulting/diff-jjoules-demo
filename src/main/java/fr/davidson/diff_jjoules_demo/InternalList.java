@@ -28,6 +28,7 @@ public class InternalList<T> {
     }
 
     public int count() {
+        consumeEnergy(2000);
         return this.internalList.size();
     }
 
