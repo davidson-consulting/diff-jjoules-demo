@@ -14,10 +14,10 @@ jobs:
       - name: Build V2 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
       - uses: actions/checkout@v1
-          with:
-            path: v1
+        with:
+          path: v1
       - name: Build V1 with Maven
-          run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+        run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Diff test selection
         run: mvn clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/V2
         env:
