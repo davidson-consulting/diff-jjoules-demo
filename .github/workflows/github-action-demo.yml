@@ -1,6 +1,8 @@
 name: Diff-JJoules Demo
 
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
     
@@ -17,7 +19,6 @@ jobs:
         run: mvn -f /home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
   diff-jjoules-demo:
     runs-on: self-hosted
-    needs: prepare-repositories
     steps:
       - name: Diff test selection
         run: mvn clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2
@@ -51,3 +52,4 @@ jobs:
     steps:
       - name: Cleanup
         run: rm -rf ../diff-jjoules-demo-v2
+
