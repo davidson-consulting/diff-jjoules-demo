@@ -9,10 +9,12 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v1
+       with:
+          path: diff-jjoules-decrease
       - name: Build V1 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Copy V1 to V2
-        run: cd .. && cp -r diff-jjoules-demo diff-jjoules-demo-v2
+        run: cd .. && cp -r diff-jjoules-decrease diff-jjoules-decrease-v2
       - name: Build and Mutate V1 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
   diff-jjoules-demo:
@@ -20,29 +22,29 @@ jobs:
     needs: prepare-repositories
     steps:
       - name: Diff test selection
-        run: mvn clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2
+        run: mvn clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
       - name: Cleaning state of V2 after selection
-        run: mvn -f ../diff-jjoules-demo-v2/pom.xml clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
+        run: mvn -f ../diff-jjoules-decrease-v2/pom.xml clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath
       - name: JJoules instrumentation
-        run: mvn clean test -DskipTests fr.davidson:diff-jjoules:instrument -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2
+        run: mvn clean test -DskipTests fr.davidson:diff-jjoules:instrument -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2
       - name: Compile V1
         run: mvn clean test -DskipTests
       - name: Compile V2
-        run: mvn clean test -DskipTests -f ../diff-jjoules-demo-v2/pom.xml
+        run: mvn clean test -DskipTests -f ../diff-jjoules-decrease-v2/pom.xml
       - name: Run tests and collect data
-        run: mvn clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:diff-jjoules:delta -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2
+        run: mvn clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:diff-jjoules:delta -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
       - name: Checkout v1
         run: git checkout -- .
       - name: Checkout v2
-        run: cd ../diff-jjoules-demo-v2 && git checkout -- .
+        run: cd ../diff-jjoules-decrease-v2 && git checkout -- .
       - name: Build and Mutate V2 with Maven
-        run: mvn -f /home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
+        run: mvn -f /home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2/pom.xml install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:untare-jjoules:mutate -Dmethod-names-per-full-qualified-names=methodNames.csv dependency:build-classpath -Dmdep.outputFile=classpath
       - name: Run Mark
-        run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-demo-v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
+        run: mvn fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/diff-jjoules-decrease-v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
         
   cleanup:
     runs-on: self-hosted
@@ -50,5 +52,5 @@ jobs:
     if: always()
     steps:
       - name: Cleanup
-        run: rm -rf ../diff-jjoules-demo-v2
+        run: rm -rf ../diff-jjoules-decrease-v2
 
