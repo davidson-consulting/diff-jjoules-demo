@@ -30,11 +30,11 @@ public class InternalList<T> {
     }
 
     public int count() {
+        consumeInstructions(1E9);
         return this.internalList.size();
     }
 
     public int count2() {
-        consumeInstructions(1E9);
         return this.internalList.size();
     }
 
