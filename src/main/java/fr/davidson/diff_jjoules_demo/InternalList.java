@@ -49,9 +49,7 @@ public class InternalList<T> {
     private static void consumeInstructions(final double instructionsToConsume) {
         EnergySample energySample = RaplDevice.RAPL.recordEnergy();
         long random = 0L;
-        System.out.println(energySample.getEnergyReport().get("instructions") + " < " + instructionsToConsume);
         while (energySample.getEnergyReport().get("instructions") < instructionsToConsume) {
-            System.out.println(energySample.getEnergyReport().get("instructions") + " < " + instructionsToConsume);
             random += new java.util.Random(random).nextLong();
         }
         energySample.stop();
