@@ -1,6 +1,7 @@
 package fr.davidson.diff_jjoules_demo;
 
 import org.powerapi.jjoules.EnergySample;
+import org.powerapi.jjoules.jni.Perf;
 import org.powerapi.jjoules.rapl.RaplDevice;
 
 import java.util.ArrayList;
@@ -46,9 +47,13 @@ public class InternalList<T> {
     }
 
     private static void consumeInstructions(final double instructionsToConsume) {
-        EnergySample energySample = RaplDevice.RAPL.recordEnergy();
+        if (EnergySample.perf == null) {
+            EnergySample.perf = new Perf();
+            EnergySample.perf.start();
+            System.out.println("START PERF");
+        }
         long random = 0L;
-        while (energySample.getEnergyReport().get("instructions") < instructionsToConsume) {
+        while (EnergySample.perf.read() < instructionsToConsume) {
             random += new java.util.Random(random).nextLong();
         }
     }
