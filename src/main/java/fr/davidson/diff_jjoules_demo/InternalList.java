@@ -33,11 +33,11 @@ public class InternalList<T> {
     }
 
     public int count2() {
-        consumeInstructions(100000);
+        consumeInstructions(1E9);
         return this.internalList.size();
     }
 
-    private static void consumeEnergy(final long energyToConsume) {
+    private static void consumeEnergy(final double energyToConsume) {
         EnergySample energySample = RaplDevice.RAPL.recordEnergy();
         long random = 0L;
         while (energySample.getEnergyReport().get("package|uJ") < energyToConsume) {
@@ -46,16 +46,18 @@ public class InternalList<T> {
         energySample.stop();
     }
 
-    private static void consumeInstructions(final long instructionsToConsume) {
+    private static void consumeInstructions(final double instructionsToConsume) {
         EnergySample energySample = RaplDevice.RAPL.recordEnergy();
         long random = 0L;
+        System.out.println(energySample.getEnergyReport().get("instructions") + " < " + instructionsToConsume);
         while (energySample.getEnergyReport().get("instructions") < instructionsToConsume) {
+            System.out.println(energySample.getEnergyReport().get("instructions") + " < " + instructionsToConsume);
             random += new java.util.Random(random).nextLong();
         }
         energySample.stop();
     }
 
-    private static void consumeDurations(final long durationsToConsume) {
+    private static void consumeDurations(final double durationsToConsume) {
         EnergySample energySample = RaplDevice.RAPL.recordEnergy();
         long random = 0L;
         while (energySample.getEnergyReport().get("durations|ns") < durationsToConsume) {
