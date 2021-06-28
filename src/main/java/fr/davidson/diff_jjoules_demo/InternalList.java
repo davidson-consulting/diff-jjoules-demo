@@ -43,7 +43,6 @@ public class InternalList<T> {
         while (energySample.getEnergyReport().get("package|uJ") < energyToConsume) {
             random += new java.util.Random(random).nextLong();
         }
-        energySample.stop();
     }
 
     private static void consumeInstructions(final double instructionsToConsume) {
@@ -52,7 +51,6 @@ public class InternalList<T> {
         while (energySample.getEnergyReport().get("instructions") < instructionsToConsume) {
             random += new java.util.Random(random).nextLong();
         }
-        energySample.stop();
     }
 
     private static void consumeDurations(final double durationsToConsume) {
@@ -61,6 +59,5 @@ public class InternalList<T> {
         while (energySample.getEnergyReport().get("durations|ns") < durationsToConsume) {
             random += new java.util.Random(random).nextLong();
         }
-        energySample.stop();
     }
 }
