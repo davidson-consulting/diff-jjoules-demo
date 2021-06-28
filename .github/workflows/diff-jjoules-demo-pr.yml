@@ -18,10 +18,12 @@ jobs:
         run: git clone http://github.com/${{ github.repository }} -b ${{ github.base_ref }} ../v1
       - name: Build V1 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath -f ../v1/pom.xml
+      - name: export LD_LIBRARY
+        run: LD_LIBRARY_PATH=/home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Diff test selection
         run: mvn -f ../v1/pom.xml clean eu.stamp-project:dspot-diff-test-selection:3.1.1-SNAPSHOT:list -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2
         env:
-          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
+          LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Cleaning state of V2 after selection
         run: mvn clean test -DskipTests
       - name: JJoules instrumentation
@@ -33,7 +35,7 @@ jobs:
       - name: Run tests and collect data
         run: mvn -f ../v1/pom.xml clean test -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath fr.davidson:diff-jjoules:delta -Dtests-list=testsThatExecuteTheChange.csv -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2
         env:
-          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
+          LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Checkout v1
         run: cd ../v1 && git checkout -- .
       - name: Checkout v2
@@ -41,7 +43,7 @@ jobs:
       - name: Run Mark
         run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
         env:
-          LD_LIBRARY_PATH: /home/benjamin/workspace/junit-jjoules/src/main/c/lib/
+          LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Run Markdown
         run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:markdown -Dpath-delta-json=diff-jjoules/delta.json -Dpath-delta-omega=diff-jjoules/deltaOmega.json
 
