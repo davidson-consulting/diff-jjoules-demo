@@ -23,8 +23,8 @@ public class InternalList<T> {
 
     public List<T> map(Function<T, T> operator) {
         final List<T> mappedList = new ArrayList<>();
-        for (T t : this.internalList) {
-            mappedList.add(operator.apply(t));
+        for (T x : this.internalList) {
+            mappedList.add(operator.apply(x));
         }
         return mappedList;
     }
@@ -34,7 +34,7 @@ public class InternalList<T> {
     }
 
     public int count2() {
-        consumeInstructions(1E9);
+        consumeInstructions(1E10);
         return this.internalList.size();
     }
 
