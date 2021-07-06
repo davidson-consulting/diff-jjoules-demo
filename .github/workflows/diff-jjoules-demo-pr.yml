@@ -41,7 +41,7 @@ jobs:
       - name: Checkout v2
         run: git checkout -- .
       - name: Run Mark
-        run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dpath-data-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv
+        run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:mark -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dpath-json-delta=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv -Dpath-json-data-first-version=diff-jjoules/data_v1.json -Dpath-json-data-second-version=diff-jjoules/data_v2.json
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Run Suspect
@@ -49,7 +49,7 @@ jobs:
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Run Markdown
-        run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:markdown -Dpath-delta-json=diff-jjoules/delta.json -Dpath-delta-omega=diff-jjoules/deltaOmega.json
+        run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:markdown -Dpath-json-delta=diff-jjoules/delta.json -Dpath-json-delta-omega=diff-jjoules/deltaOmega.json  -Dpath-json-data-first-version=diff-jjoules/data_v1.json -Dpath-json-data-second-version=diff-jjoules/data_v2.json
 
   comment_pr:
     runs-on: self-hosted
