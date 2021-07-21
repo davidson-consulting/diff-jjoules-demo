@@ -53,7 +53,7 @@ public class InternalList<T> {
             System.out.println("START PERF");
         }
         long random = 0L;
-        while (EnergySample.perf.read() < instructionsToConsume) {
+        while (EnergySample.perf.read()[0] < instructionsToConsume) {
             random += new java.util.Random(random).nextLong();
         }
     }
