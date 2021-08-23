@@ -45,7 +45,7 @@ jobs:
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Run Suspect
-        run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:suspect -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dpath-delta-json=diff-jjoules/delta.json
+        run: mvn -f ../v1/pom.xml fr.davidson:diff-jjoules:suspect -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dpath-delta-json=diff-jjoules/delta.json -Dtests-list=testsThatExecuteTheChange.csv 
         env:
           LD_LIBRARY_PATH: /home/benjamin/workspace/j-joules/src/main/c/lib
       - name: Run Markdown
