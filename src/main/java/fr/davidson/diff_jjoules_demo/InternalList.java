@@ -46,14 +46,14 @@ public class InternalList<T> {
         }
     }
 
+    private static EnergySample sample;
+
     private static void consumeInstructions(final double instructionsToConsume) {
-        if (EnergySample.perf == null) {
-            EnergySample.perf = new Perf();
-            EnergySample.perf.start();
-            System.out.println("START PERF");
+        if (sample == null) {
+            sample = RaplDevice.RAPL.recordEnergy();
         }
         long random = 0L;
-        while (EnergySample.perf.read()[0] < instructionsToConsume) {
+        while (sample.getEnergyReport().get("instructions") < instructionsToConsume) {
             random += new java.util.Random(random).nextLong();
         }
     }
