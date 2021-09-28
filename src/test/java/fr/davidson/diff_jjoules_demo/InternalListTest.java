@@ -1,5 +1,6 @@
 package fr.davidson.diff_jjoules_demo;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -42,9 +43,10 @@ public class InternalListTest {
         assertEquals(4, emptyList.count());
     }
 
+    /*@Ignore
     @Test
     void testCount2() {
         final InternalList<Integer> emptyList = new InternalList<>(1, 1, 1, 1);
         assertEquals(4, emptyList.count2());
-    }
+    }*/
 }
