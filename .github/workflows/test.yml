@@ -1,6 +1,8 @@
 name: Test
 
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -13,7 +15,7 @@ jobs:
         with:
           repository: 'davidson-consulting/junit-jjoules'
       - name: Install dependencies
-      - run: mvn clean install -DskipTests -f junit-jjoules/pom.xml
+        run: mvn clean install -DskipTests -f junit-jjoules/pom.xml
       - name: Build and run tests
         run: mvn --batch-mode clean test
       - name: Codecov
