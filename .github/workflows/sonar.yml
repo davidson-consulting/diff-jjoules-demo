@@ -24,7 +24,7 @@ jobs:
       - name: Install JUnit-JJoules
         run: mvn clean install -DskipTests -f junit-jjoules/pom.xml
       - name: SonarCloud Scan
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=davidson-consulting -Dsonar.projectKey=davidson-consulting_diff-jjoules-demo
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=davidson-consulting -Dsonar.projectKey=davidson-consulting_diff-jjoules-demo
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
