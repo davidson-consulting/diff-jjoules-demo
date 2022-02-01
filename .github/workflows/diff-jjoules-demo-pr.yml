@@ -19,7 +19,7 @@ jobs:
       - name: Build V1 with Maven
         run: mvn install -DskipTests dependency:build-classpath -Dmdep.outputFile=classpath -f ../v1/pom.xml
       - name: Diff-JJoules Demo
-        run: mvn -f ../v1/pom.xml clean fr.davidson:diff-jjoules:diff-jjoules -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dsuspect=false
+        run: mvn -f ../v1/pom.xml clean fr.davidson:diff-jjoules-maven:diff-jjoules -Dpath-dir-second-version=/home/benjamin/workspace/actions-runner/_work/diff-jjoules-demo/v2 -Dsuspect=false
 
   comment_pr:
     runs-on: self-hosted
