@@ -13,6 +13,7 @@ public class SourceCode {
 
     public void methodOne() {
         consume(2000);
+        consume(2000);
     }
 
     public void methodTwo() {
