@@ -21,11 +21,11 @@ The algorithm is as follow :
 
 :construction:
 
-### Install Diff-JJoules
+### Install TLPC-Sensor
 
 ```sh
-git clone https://github.com/davidson-consulting/diff-jjoules
-cd diff-jjoules
+git clone https://github.com/davidson-consulting/tlpc-sensor
+cd tlpc-sensor/examples/tlpc-sensor
 mvn clean install -DskipTests
 ```
 
@@ -34,6 +34,14 @@ mvn clean install -DskipTests
 ```sh
 git clone https://github.com/STAMP-project/dspot.git
 cd dspot
+mvn clean install -DskipTests
+```
+
+### Install Diff-JJoules
+
+```sh
+git clone https://github.com/davidson-consulting/diff-jjoules
+cd diff-jjoules
 mvn clean install -DskipTests
 ```
 
