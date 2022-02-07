@@ -68,9 +68,25 @@ public void methodOne() {
 
 :construction:
 
-```diff
-```
-
 ### Run 
 
-:construction:
+To run the demo, you need to first clone twice this repository:
+
+```sh
+git clone https://github.com/davidson-consulting/diff-jjoules-demo.git /tmp/v1
+git clone https://github.com/davidson-consulting/diff-jjoules-demo.git /tmp/v2
+```
+
+Then, checkout the `v2` to the correct version:
+
+```sh
+cd v2
+git checkout demo
+```
+
+Eventually, run `diff-jjoules`:
+
+```sh
+cd /tmp/v1
+mvn fr.davidson:diff-jjoules-maven:diff-jjoules -Dpath-dir-second-version=/tmp/v2/ -Dsuspect=false
+```
