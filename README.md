@@ -45,6 +45,13 @@ cd diff-jjoules
 mvn clean install -DskipTests
 ```
 
+### Install Diff-JJoules-Maven
+
+```sh
+cd diff-jjoules-maven
+mvn clean install -DskipTests
+```
+
 ### Set up permission to RAPL and perf_event
 
 ```sh
