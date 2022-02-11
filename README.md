@@ -21,6 +21,9 @@ The algorithm is as follow :
 
 :construction:
 
+### Install JAVA 11
+
+
 ### Install TLPC-Sensor
 
 ```sh
@@ -34,6 +37,14 @@ mvn clean install -DskipTests
 ```sh
 git clone https://github.com/STAMP-project/dspot.git
 cd dspot
+mvn clean install -DskipTests
+```
+
+### Install Diff-JJoules-Maven
+
+```sh
+git clone //url
+cd diff-jjoules
 mvn clean install -DskipTests
 ```
 
