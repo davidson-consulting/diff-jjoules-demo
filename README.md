@@ -9,7 +9,7 @@ Diff-JJoules aims at measuring the impact of code changes (commit) on energy con
 The algorithm is as follow : 
 
 1. Clone twice the project
-2. Each clone is set to a specific version, for example two sucessive commits
+2. Each clone is set to a specific version, for example two successive commits
 3. Execute the tests on the two versions and select the tests as follow :
     * Select the tests in the version before the commit that execute the lines that have been removed by the commit
     * Select the tests in the version after the commit that execute the lines that have been added by the commit
@@ -21,7 +21,11 @@ The algorithm is as follow :
 
 :construction:
 
+### Install JAVA 11
+
 ### Install TLPC-Sensor
+
+You need to install [libpfm4](https://github.com/gfieni/libpfm4)
 
 ```sh
 git clone https://github.com/davidson-consulting/tlpc-sensor
@@ -42,6 +46,8 @@ mvn clean install -DskipTests
 ```sh
 git clone https://github.com/davidson-consulting/diff-jjoules
 cd diff-jjoules
+mvn clean install -DskipTests
+cd diff-jjoules-maven
 mvn clean install -DskipTests
 ```
 
