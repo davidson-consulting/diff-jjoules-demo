@@ -104,3 +104,9 @@ Eventually, run `diff-jjoules`:
 cd /tmp/v1
 mvn fr.davidson:diff-jjoules-maven:diff-jjoules -Dpath-dir-second-version=/tmp/v2/ -Dsuspect=false
 ```
+
+## WSL Troubleshooting
+
+The project needs `perf` to work.
+Perf is not as easy as doing `apt install` in WSL.
+One can have a look at: [https://stackoverflow.com/a/74361501/5257140](https://stackoverflow.com/a/74361501/5257140) that seems to work for the installation of perf in WSL.
